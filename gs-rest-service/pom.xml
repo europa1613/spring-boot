@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.2.RELEASE</version>
+		<version>1.5.3.RELEASE</version>
 	</parent>
 
 	<dependencies>
@@ -28,6 +28,10 @@
 			<artifactId>json-path</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
 	</dependencies>
 
 	<properties>

@@ -19,7 +19,7 @@ public class QuoteService {
 		this.restTemplate = restTemplate;
 	}
 
-	public Quote getRamdomQuote() {
+	public Quote getRandomQuote() {
 		Quote quote = restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random", Quote.class);
 		log.info(quote.toString());
 		return quote;

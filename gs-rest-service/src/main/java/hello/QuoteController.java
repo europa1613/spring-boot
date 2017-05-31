@@ -17,7 +17,7 @@ public class QuoteController {
 
 	@RequestMapping("/quote")
 	public Quote getRamdomQuote() {
-		return service.getRamdomQuote();
+		return service.getRandomQuote();
 	}
 
 }
