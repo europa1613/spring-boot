@@ -17,6 +17,18 @@ public class User {
 		this.birthDate = birthDate;
 	}
 
+	public User(String name, Date birthDate) {
+		super();
+		this.name = name;
+		this.birthDate = birthDate;
+	}
+	
+	
+
+	public User() {
+		super();
+	}
+
 	public Integer getId() {
 		return id;
 	}
