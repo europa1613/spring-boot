@@ -14,6 +14,15 @@ public class CustomerController {
 	@ResponseBody
 	@RequestMapping("/all")
 	public List<Customer> getAllCustomers() {
-		return Arrays.asList(new Customer("John", "Doe"), new Customer("Jane", "Doe"));
+
+		List<Customer> customers = Arrays.asList(new Customer("John", "Doe"), new Customer("Jane", "Doe"));
+
+		for (Customer customer : customers) {
+			Account checking = new Account("1234567890", "Checking");
+			Account savings = new Account("0987654321", "Savings");
+			customer.setAccounts(Arrays.asList(checking, savings));
+		}
+
+		return customers;
 	}
 }

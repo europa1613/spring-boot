@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
@@ -25,7 +26,12 @@ public class SwaggerConfig {
 
 	@Bean
 	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).apiInfo(API_INFO).produces(PRODUCES_AND_CONSUMES)
-				.consumes(PRODUCES_AND_CONSUMES);
+		return new Docket(DocumentationType.SWAGGER_2)
+				.apiInfo(API_INFO)
+				.produces(PRODUCES_AND_CONSUMES)
+				.consumes(PRODUCES_AND_CONSUMES)
+				.select()
+				.paths(PathSelectors.ant("/customers/*")) //only show apis with this uri
+				.build();
 	}
 }
