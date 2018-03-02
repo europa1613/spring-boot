@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
-	public static final Contact DEFAULT_CONTACT = new Contact("Andromeda", "www.andromeda.com", "111-111-1111");
+	public static final Contact DEFAULT_CONTACT = new Contact("Andromeda", "http://www.andromeda.com", "europa1613@andromeda.com");
 	public static final ApiInfo API_INFO = new ApiInfo("Restful Api", "Restful Api Desc", "1.0", "urn:tos",
 			DEFAULT_CONTACT, "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0");
 	private static final Set<String> PRODUCES_AND_CONSUMES = new HashSet<>(
