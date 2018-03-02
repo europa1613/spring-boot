@@ -1,6 +1,7 @@
 package com.rest.services.restwebservices;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class SwaggerConfig {
 
 	public static final Contact DEFAULT_CONTACT = new Contact("Andromeda", "http://www.andromeda.com", "europa1613@andromeda.com");
 	public static final ApiInfo API_INFO = new ApiInfo("Restful Api", "Restful Api Desc", "1.0", "urn:tos",
-			DEFAULT_CONTACT, "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0");
+			DEFAULT_CONTACT, "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", Collections.EMPTY_LIST);
 	private static final Set<String> PRODUCES_AND_CONSUMES = new HashSet<>(
 			Arrays.asList("application/json", "application/xml"));
 
