@@ -7,9 +7,11 @@ public class Customer {
 	private String firstname;
 
 	private String lastname;
-	
-	private List<Account> accounts; // list of object, how does it show up in swagger. 
-	//see Customer_Swagger_Definition.PNG
+
+	private List<Account> accounts; // list of object, how does it show up in swagger.
+	// see Customer_Swagger_Definition.PNG
+
+	private AccountDetailsData accountDetailsData;
 
 	public Customer() {
 		super();
@@ -43,6 +45,14 @@ public class Customer {
 
 	public void setAccounts(List<Account> accounts) {
 		this.accounts = accounts;
-	}	
+	}
+
+	public AccountDetailsData getAccountDetailsData() {
+		return accountDetailsData;
+	}
+
+	public void setAccountDetailsData(AccountDetailsData accountDetailsData) {
+		this.accountDetailsData = accountDetailsData;
+	}
 
 }
