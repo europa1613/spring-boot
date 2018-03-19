@@ -84,4 +84,13 @@ public class UserJPAResource {
 	public String greeting(@RequestHeader(name = "Accept-Language", required = false) Locale locale) {
 		return messageSource.getMessage("good.morning.message", null, locale);
 	}
+
+	@GetMapping("/jpa/users/{id}/posts")
+	public List<Post> retrieveAllPostsForUser(@PathVariable int id) {
+		Optional<User> user = userRepository.findById(id);
+		if (!user.isPresent()) {
+			throw new UserNotFoundException("id-" + id);
+		}
+		return user.get().getPosts();
+	}
 }
