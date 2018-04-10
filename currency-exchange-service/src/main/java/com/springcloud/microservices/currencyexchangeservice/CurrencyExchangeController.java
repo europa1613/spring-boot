@@ -11,7 +11,7 @@ public class CurrencyExchangeController {
 
 	@Autowired
 	private Environment env;
-	
+
 	@Autowired
 	private ExchangeValueRepository repository;
 
