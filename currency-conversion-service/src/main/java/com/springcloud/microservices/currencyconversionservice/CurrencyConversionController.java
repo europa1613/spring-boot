@@ -18,6 +18,9 @@ public class CurrencyConversionController {
 	@Autowired
 	private Environment env;
 
+	@Autowired
+	private FeignProxy feignProxy;
+
 	@GetMapping("/currency-converter/from/{from}/to/{to}/quatity/{quantity}")
 	public CurrencyConversionBean convertCurrency(@PathVariable final String from, @PathVariable final String to,
 			@PathVariable final BigDecimal quantity) {
@@ -31,6 +34,21 @@ public class CurrencyConversionController {
 				uriVariables);
 
 		final CurrencyConversionBean response = responseEntity.getBody();
+
+		final BigDecimal value = response.getConversionMultiple().multiply(quantity);
+
+		response.setQuantity(quantity);
+		response.setTotalCalculatedAmount(value.multiply(quantity));
+		response.setPort(Integer.parseInt(this.env.getProperty("local.server.port")));
+
+		return response;
+	}
+
+	@GetMapping("/currency-converter-feign/from/{from}/to/{to}/quatity/{quantity}")
+	public CurrencyConversionBean convertCurrencyFeign(@PathVariable final String from, @PathVariable final String to,
+			@PathVariable final BigDecimal quantity) {
+
+		final CurrencyConversionBean response = feignProxy.getExchangeValue(from, to);
 
 		final BigDecimal value = response.getConversionMultiple().multiply(quantity);
 
