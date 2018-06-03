@@ -11,13 +11,14 @@ public class CurrencyConversionBean {
 	private BigDecimal conversionMultiple;
 	private BigDecimal totalCalculatedAmount;
 	private int port;
+	private int exchangeServicePort;
 
 	public CurrencyConversionBean() {
 		super();
 	}
 
-	public CurrencyConversionBean(Long id, String from, String to, BigDecimal quantity, BigDecimal conversionMultiple,
-			BigDecimal totalCalculatedAmount) {
+	public CurrencyConversionBean(final Long id, final String from, final String to, final BigDecimal quantity,
+			final BigDecimal conversionMultiple, final BigDecimal totalCalculatedAmount) {
 		super();
 		this.id = id;
 		this.from = from;
@@ -27,60 +28,68 @@ public class CurrencyConversionBean {
 		this.totalCalculatedAmount = totalCalculatedAmount;
 	}
 
-	public Long getId() {
-		return id;
+	public BigDecimal getConversionMultiple() {
+		return this.conversionMultiple;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public int getExchangeServicePort() {
+		return this.exchangeServicePort;
 	}
 
 	public String getFrom() {
-		return from;
+		return this.from;
 	}
 
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	public String getTo() {
-		return to;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-
-	public BigDecimal getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(BigDecimal quantity) {
-		this.quantity = quantity;
-	}
-
-	public BigDecimal getConversionMultiple() {
-		return conversionMultiple;
-	}
-
-	public void setConversionMultiple(BigDecimal conversionMultiple) {
-		this.conversionMultiple = conversionMultiple;
-	}
-
-	public BigDecimal getTotalCalculatedAmount() {
-		return totalCalculatedAmount;
-	}
-
-	public void setTotalCalculatedAmount(BigDecimal totalCalculatedAmount) {
-		this.totalCalculatedAmount = totalCalculatedAmount;
+	public Long getId() {
+		return this.id;
 	}
 
 	public int getPort() {
-		return port;
+		return this.port;
 	}
 
-	public void setPort(int port) {
+	public BigDecimal getQuantity() {
+		return this.quantity;
+	}
+
+	public String getTo() {
+		return this.to;
+	}
+
+	public BigDecimal getTotalCalculatedAmount() {
+		return this.totalCalculatedAmount;
+	}
+
+	public void setConversionMultiple(final BigDecimal conversionMultiple) {
+		this.conversionMultiple = conversionMultiple;
+	}
+
+	public void setExchangeServicePort(final int exchangeServicePort) {
+		this.exchangeServicePort = exchangeServicePort;
+	}
+
+	public void setFrom(final String from) {
+		this.from = from;
+	}
+
+	public void setId(final Long id) {
+		this.id = id;
+	}
+
+	public void setPort(final int port) {
 		this.port = port;
+	}
+
+	public void setQuantity(final BigDecimal quantity) {
+		this.quantity = quantity;
+	}
+
+	public void setTo(final String to) {
+		this.to = to;
+	}
+
+	public void setTotalCalculatedAmount(final BigDecimal totalCalculatedAmount) {
+		this.totalCalculatedAmount = totalCalculatedAmount;
 	}
 
 }

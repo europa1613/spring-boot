@@ -54,6 +54,7 @@ public class CurrencyConversionController {
 
 		response.setQuantity(quantity);
 		response.setTotalCalculatedAmount(value.multiply(quantity));
+		response.setExchangeServicePort(response.getPort());		
 		response.setPort(Integer.parseInt(this.env.getProperty("local.server.port")));
 
 		return response;
