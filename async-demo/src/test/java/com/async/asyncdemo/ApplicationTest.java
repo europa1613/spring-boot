@@ -19,6 +19,14 @@ public class ApplicationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+	
+	@Test
+	public void sync_test_multiple() throws Exception {
+		for (int i = 0; i < 100; i++)
+			this.mockMvc.perform(get("/jokes/sync"))
+						.andDo(print())
+						.andExpect(status().isOk());
+	}
 
 	@Test
 	public void async_test() throws Exception {
