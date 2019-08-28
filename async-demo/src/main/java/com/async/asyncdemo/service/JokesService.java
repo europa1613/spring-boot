@@ -78,6 +78,7 @@ public class JokesService {
 																		.thenApply(transformer::apply);
 
 		CompletableFuture<JokesResponse> result = thousand.thenCombine(hundred, reducer::apply);
+		
 
 		return result.get(60000, TimeUnit.MILLISECONDS);
 	}
