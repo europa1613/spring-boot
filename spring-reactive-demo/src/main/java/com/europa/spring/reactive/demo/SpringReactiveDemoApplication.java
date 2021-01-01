@@ -34,10 +34,15 @@ class DataLoader {
 
   @PostConstruct
   private void loadData() {
-    Flux.just("Americano", "Esmeralda", "Kaldi's Coffee", "Café Olé", "Delta", "Java")
-        .map(name -> new Coffee(UUID.randomUUID().toString(), name))
-        .flatMap(repo::save)
-        .subscribe(System.out::println);
+    repo.findAll()
+        .collectList()
+        .subscribe(coffees -> System.out.println("=>" + coffees));
+    repo.deleteAll()
+        .thenMany(Flux.just("Americano", "Esmeralda", "Kaldi's Coffee", "Café Olé", "Delta", "Java")
+            .map(name -> new Coffee(UUID.randomUUID().toString(), name))
+            .flatMap(repo::save))
+        .thenMany(repo.findAll())
+        .subscribe(coffee -> System.out.println("==>" + coffee));
   }
 }
 
