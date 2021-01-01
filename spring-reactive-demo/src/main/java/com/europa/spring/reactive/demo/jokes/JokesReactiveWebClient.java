@@ -2,6 +2,7 @@ package com.europa.spring.reactive.demo.jokes;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,7 +25,8 @@ public class JokesReactiveWebClient {
         .flatMap(i -> client.get().uri("{count}/jokes?delay=2", 1)
             .retrieve()
             .bodyToMono(Joke[].class))
-        .blockLast();
+        .doOnNext(jokes -> System.out.println(Arrays.asList(jokes)))
+    .blockLast();
 
    /* List<Mono<Joke[]>> monoList = Stream.of(1, 2, 3)
         .map(i -> client.get().uri("{count}/jokes?delay=2", 1).retrieve().bodyToMono(Joke[].class))
