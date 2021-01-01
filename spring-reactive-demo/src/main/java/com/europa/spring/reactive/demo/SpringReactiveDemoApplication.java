@@ -1,5 +1,6 @@
 package com.europa.spring.reactive.demo;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
@@ -12,7 +13,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 public class SpringReactiveDemoApplication {
@@ -23,6 +26,30 @@ public class SpringReactiveDemoApplication {
 
 }
 
+@Service
+class CoffeeService {
+
+  private final CoffeeRepository repo;
+
+  public CoffeeService(CoffeeRepository repo) {
+    this.repo = repo;
+  }
+
+  Flux<Coffee> getAllCoffees() {
+    return repo.findAll();
+  }
+
+  Mono<Coffee> getCoffeeById(String id) {
+    return repo.findById(id);
+  }
+
+  Flux<CoffeeOrder> getOrders(String coffeeId) {
+    return Flux.<CoffeeOrder>generate(sink -> sink.next(new CoffeeOrder(coffeeId, Instant.now())))
+        .delayElements(
+            Duration.ofSeconds(1));
+  }
+}
+
 @Component
 class DataLoader {
 
@@ -31,6 +58,7 @@ class DataLoader {
   public DataLoader(CoffeeRepository repo) {
     this.repo = repo;
   }
+
 
   @PostConstruct
   private void loadData() {
