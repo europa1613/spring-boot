@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -14,7 +16,7 @@ public class JokesReactiveWebClient {
 
   private static final Logger logger = LoggerFactory.getLogger(JokesReactiveWebClient.class);
 
-  private static final String JOKES_API_URL = "http://localhost:3001/{count}/jokes?delay=2";
+  private static final String JOKES_API_URL = "http://localhost:3001/";
 
   private static final WebClient client = WebClient.create(JOKES_API_URL);
 
@@ -23,7 +25,10 @@ public class JokesReactiveWebClient {
 
     Instant start = Instant.now();
     for (int i = 1; i < 4; i++) {
-      client.get().uri("", 1).retrieve().bodyToMono(Joke[].class);
+      /*Arrays.stream(Objects.requireNonNull(client.get().uri("{count}/jokes?delay=2", 1).retrieve()
+          .bodyToMono(Joke[].class).block())).forEach(j -> logger.info("====> Jokes: {}", j));*/
+      client.get().uri("{count}/jokes?delay=2", 1).retrieve()
+          .bodyToMono(Joke[].class).block();
     }
     logger.info("====> Elapsed time: {}ms", Duration.between(start, Instant.now()).toMillis());
   }
