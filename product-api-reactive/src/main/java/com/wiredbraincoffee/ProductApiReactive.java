@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Bean;
 import reactor.core.publisher.Flux;
 
 @SpringBootApplication
-public class ProductApiAnnotationApplication {
+public class ProductApiReactive {
 
   private static final Logger logger = LoggerFactory
-      .getLogger(ProductApiAnnotationApplication.class);
+      .getLogger(ProductApiReactive.class);
 
   public static void main(String[] args) {
-    SpringApplication.run(ProductApiAnnotationApplication.class, args);
+    SpringApplication.run(ProductApiReactive.class, args);
   }
 
   @Bean

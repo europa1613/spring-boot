@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.wiredbraincoffee</groupId>
-	<artifactId>product-api-annotation</artifactId>
+	<artifactId>product-api-reactive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>product-api-annotation</name>
+	<name>product-api-reactive</name>
 	<description>Demo project for Spring Boot Reactive Webflux</description>
 
 	<properties>
