@@ -25,7 +25,7 @@ public class JokesReactiveWebClient {
         .flatMap(i -> client.get().uri("{count}/jokes?delay=2", 1)
             .retrieve()
             .bodyToMono(Joke[].class))
-        .doOnNext(jokes -> System.out.println(Arrays.asList(jokes)))
+        .doOnNext(jokes -> logger.info("==============> jokes: {}", Arrays.asList(jokes)))
     .blockLast();
 
    /* List<Mono<Joke[]>> monoList = Stream.of(1, 2, 3)
