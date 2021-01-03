@@ -63,4 +63,9 @@ public class ProductController {
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
+  @DeleteMapping
+  public Mono<Void> deleteAll() {
+    return repository.deleteAll();
+  }
+
 }
