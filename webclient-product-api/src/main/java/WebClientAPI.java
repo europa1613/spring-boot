@@ -71,6 +71,7 @@ public class WebClientAPI {
 
   public static void main(String[] args) {
     WebClientAPI api = new WebClientAPI();
+
     api.save()
         .thenMany(api.all())
         .take(1)
@@ -79,6 +80,16 @@ public class WebClientAPI {
         .thenMany(api.all())
         .thenMany(api.events())
         .subscribe(System.out::println);
+
+    /*api.all()
+        .subscribe(product -> System.out.println("############ ALL: " + product));*/
+
+    /*api.client
+        .get()
+        .retrieve()
+        .bodyToFlux(Product.class)
+        //.doOnNext(o -> System.out.println("******* GET ALL: " + o))
+        .subscribe(product -> System.out.println("############ ALL: " + product));*/
 
   }
 }

@@ -1,5 +1,6 @@
 package com.europa.spring.reactive.demo;
 
+import com.europa.spring.reactive.demo.jokes.Joke;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -114,10 +116,21 @@ class CoffeeService {
             Duration.ofSeconds(1));
   }
 
+  public static final String JOKES_API_URL = "http://localhost:3001/";
+
+  private static final WebClient client = WebClient.create(JOKES_API_URL);
+
   @Async
   public void submit() throws InterruptedException {
     logger.info("================> submit(): start");
-    Thread.sleep(10000);
+    //Thread.sleep(10000);
+    client
+        .get()
+        .uri("{count}/jokes?delay=2", 11)
+        .retrieve()
+        .bodyToFlux(Joke.class)
+        .doOnNext(o -> logger.info("*******doOnNext():Joke: {}", o))
+        .subscribe(o -> logger.info("*******subscribe():Joke: {}", o));
     logger.info("================> submit(): end");
   }
 }

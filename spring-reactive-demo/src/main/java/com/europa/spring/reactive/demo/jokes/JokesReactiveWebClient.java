@@ -17,7 +17,7 @@ public class JokesReactiveWebClient {
   private static final WebClient client = WebClient.create(JOKES_API_URL);
 
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
 
     Instant start = Instant.now();
 
@@ -26,7 +26,7 @@ public class JokesReactiveWebClient {
             .retrieve()
             .bodyToMono(Joke[].class))
         .doOnNext(jokes -> logger.info("==============> jokes: {}", Arrays.asList(jokes)))
-    .blockLast();
+        .blockLast();
 
    /* List<Mono<Joke[]>> monoList = Stream.of(1, 2, 3)
         .map(i -> client.get().uri("{count}/jokes?delay=2", 1).retrieve().bodyToMono(Joke[].class))
@@ -42,6 +42,37 @@ public class JokesReactiveWebClient {
       //jokesMono.subscribe(System.out::println); doesn't work
     }*/
     logger.info("====> Elapsed time: {}ms", Duration.between(start, Instant.now()).toMillis());
+
+    /*Flux<Joke> jokeFlux = client
+        .get()
+        .uri("{count}/jokes", 10)
+        .retrieve()
+        .bodyToFlux(Joke.class)
+        .doOnNext(o -> System.out.println("******* GET ALL: " + o));
+
+    Flux.empty()
+        .thenMany(jokeFlux)
+        .doOnNext(joke -> System.out.println("$$$$$$ joke: " + joke))
+        .subscribe(System.out::println);*/
+
+    //Thread.sleep(2000);
+
+    client
+        .get()
+        .uri("{count}/jokes", 10)
+        .retrieve()
+        .bodyToFlux(Joke.class)
+        .doOnNext(o -> System.out.println("******* GET ALL: " + o))
+        .subscribe(System.out::println);
+
+    WebClient client2 = WebClient.create("http://localhost:8081/products");
+    client2
+        .get()
+        .retrieve()
+        .bodyToFlux(Product.class)
+        //.doOnNext(o -> System.out.println("******* GET ALL: " + o))
+        .subscribe(product -> System.out.println("############ ALL: " + product));
+    Thread.sleep(2000);
   }
 
 }
