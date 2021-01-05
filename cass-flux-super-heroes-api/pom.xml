@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.europa</groupId>
-	<artifactId>super-heroes-cass-flux</artifactId>
+	<artifactId>cass-flux-super-heroes-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cass-flux-super-heroes</name>
+	<name>cass-flux-super-heroes-api</name>
 	<description>Demo project for Spring Boot WebFlux with Cassandra</description>
 
 	<properties>

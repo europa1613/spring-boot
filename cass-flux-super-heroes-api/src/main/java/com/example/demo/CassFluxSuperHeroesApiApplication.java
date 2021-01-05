@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CassFluxSuperHeroesApplication {
+public class CassFluxSuperHeroesApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CassFluxSuperHeroesApplication.class, args);
+		SpringApplication.run(CassFluxSuperHeroesApiApplication.class, args);
 	}
 
 }
