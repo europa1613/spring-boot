@@ -65,14 +65,25 @@ public class JokesReactiveWebClient {
         .doOnNext(o -> System.out.println("******* GET ALL: " + o))
         .subscribe(System.out::println);
 
-    WebClient client2 = WebClient.create("http://localhost:8081/products");
+    /*WebClient client2 = WebClient.create("http://localhost:8081/products");
     client2
         .get()
         .retrieve()
         .bodyToFlux(Product.class)
         //.doOnNext(o -> System.out.println("******* GET ALL: " + o))
-        .subscribe(product -> System.out.println("############ ALL: " + product));
-    Thread.sleep(2000);
+        .subscribe(product -> System.out.println("############ ALL: " + product));*/
+
+
+    WebClient client3 = WebClient.create("http://localhost:3001/{count}/jokes?delay={delay}");
+    client3
+        .get()
+        .uri("", 7, 1)
+        .retrieve()
+        .bodyToFlux(Joke.class)
+        .doOnNext(o -> System.out.println("+++++++++++" + o))
+        .subscribe(o -> System.out.println("+++++++++++" + o));
+
+    Thread.sleep(3000);
   }
 
 }
