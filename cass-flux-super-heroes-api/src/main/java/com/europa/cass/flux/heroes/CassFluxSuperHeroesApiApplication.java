@@ -15,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
-@EnableAsync
+//@EnableAsync
 public class CassFluxSuperHeroesApiApplication {
 
   public static void main(String[] args) {

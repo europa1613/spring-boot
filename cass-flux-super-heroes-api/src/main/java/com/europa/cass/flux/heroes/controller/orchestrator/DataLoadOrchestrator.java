@@ -17,7 +17,7 @@ public class DataLoadOrchestrator {
   }
 
 
-  @Async
+  //@Async
   public void start() throws InterruptedException {
     logger.info("================> submit(): start");
     //Thread.sleep(10000);
@@ -28,7 +28,6 @@ public class DataLoadOrchestrator {
         .bodyToFlux(Joke.class)
         .doOnNext(o -> logger.info("*******doOnNext():Joke: {}", o))
         .subscribe(o -> logger.info("*******subscribe():Joke: {}", o));*/
-
 
     superHeroDataLoader
         .load()
