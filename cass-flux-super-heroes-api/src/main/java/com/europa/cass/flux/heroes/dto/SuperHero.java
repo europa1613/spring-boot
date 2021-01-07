@@ -1,6 +1,7 @@
 package com.europa.cass.flux.heroes.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class SuperHero {
   @PrimaryKey
   private SuperHeroPrimaryKey key;
 
-  @Column
-  private String name;
+  @Column("updated_ts")
+  private LocalDateTime updatedTs;
 
 }

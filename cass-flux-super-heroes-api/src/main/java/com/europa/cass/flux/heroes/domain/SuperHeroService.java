@@ -1,6 +1,7 @@
 package com.europa.cass.flux.heroes.domain;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicLong;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -26,13 +27,19 @@ public class SuperHeroService {
   }
 
   public Flux<SuperHeroDomain> heroes() {
+    AtomicLong count = new AtomicLong();
     return this.client
         .get()
         .uri("", this.delay)
         .retrieve()
         .bodyToFlux(SuperHeroDomain.class)
-        .doOnNext(o -> logger.info("******* SuperHeroService.heroes().doOnNext(): {}", o))
-        .timeout(Duration.ofSeconds(30));
+        .doOnNext(o -> {
+          count.incrementAndGet();
+          logger.info("******* SuperHeroService.heroes().doOnNext(): {}", o);
+        })
+        .timeout(Duration.ofSeconds(30))
+        .doOnComplete(
+            () -> logger.info("******* SuperHeroService.heroes().doOnComplete(): {}", count));
   }
 
 }
