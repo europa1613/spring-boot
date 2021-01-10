@@ -72,18 +72,16 @@ class PingPongController {
   }
 
   // FAILS
+  //works after importing/adding the server cert to java keystore - cacerts
   @GetMapping("/secure/resttemplate")
-  @SuppressWarnings("unchecked")
-  public Mono<Map<String, Integer>> restTempalate() {
+  public Mono<ResponseEntity<RandomNumber>> restTemplateWithoutSSLSetup() {
     RestTemplate template = new RestTemplate();
-    ParameterizedTypeReference<HashMap<String, Integer>> responseType =
-        new ParameterizedTypeReference<HashMap<String, Integer>>() {
-        };
+
     RequestEntity<Void> request = RequestEntity.get(URI.create("https://localhost:8080/random/int"))
         .accept(MediaType.APPLICATION_JSON).build();
-    Map<String, Integer> object = (Map<String, Integer>) template
-        .exchange(request, responseType);
-    return Mono.just(object);
+    ResponseEntity<RandomNumber> entity = template
+        .exchange(request, RandomNumber.class);
+    return Mono.just(entity);
   }
 
   @Value("${trust.store}")
@@ -105,10 +103,10 @@ class PingPongController {
     return new RestTemplate(factory);
   }
 
-  // FAILS
+  // FAILS due SAN not available
+  // Works after certificate is added with SAN, Subject Alternative
   @GetMapping("/secure/ssl")
-  @SuppressWarnings("unchecked")
-  public Mono<ResponseEntity<RandomNumber>> restTempalateWithSSL() throws Exception {
+  public Mono<ResponseEntity<RandomNumber>> restTemplateWithSSL() throws Exception {
     RestTemplate template = restTemplate();
     ParameterizedTypeReference<HashMap<String, Integer>> responseType =
         new ParameterizedTypeReference<HashMap<String, Integer>>() {
@@ -118,6 +116,19 @@ class PingPongController {
     ResponseEntity<RandomNumber> entity = template
         .exchange(request, RandomNumber.class);
     return Mono.just(entity);
+  }
+
+  //works after importing/adding the server cert to java keystore - cacerts
+
+  // keytool -export -alias europa -keystore europa.jks -rfc -file europa_X509_certificate.cer
+  //arvins-mac @ /Library/Java/JavaVirtualMachines/jdk1.8.0_271.jdk/Contents/Home/jre/lib/security
+  // [22] → keytool -import -keystore cacerts -file ~/2-javaspace/spring-boot/springboot-https-demo/src/main/resources/keystore/europa.jks
+  @GetMapping("/ssl/webclient")
+  public Mono<RandomNumber> webclientSSL() {
+    return WebClient.create("https://localhost:8080/random/int")
+        .get()
+        .retrieve()
+        .bodyToMono(RandomNumber.class);
   }
 
 }

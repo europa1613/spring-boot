@@ -11,6 +11,15 @@
   - `Certificate for <localhost> doesn't match common name of the certificate subject:` Exception occurs 
   - `keytool -genkeypair -keyalg RSA -keysize 2048 -alias europa -dname "CN=europa,OU=Hakan,O=Hakan,C=NL" -ext "SAN:c=DNS:localhost,IP:127.0.0.1" -validity 3650 -keystore europa.jks -storepass password -keypass password`
 
+### View Certificate
+- `keytool -list -v -keystore europa.jks`
+
+### Convert JKS to X.509 Certificate (.cer)
+- `keytool -export -alias europa -keystore keystore.jks -rfc -file europa_X509_certificate.cer`
+
+### Import a X.509 into java keystore cacerts
+- `keytool -import -keystore cacerts -file europa_X509_certificate.cer`
+
 ```bash
  [422] → keytool -genkeypair -alias europa -keyalg RSA -keysize 2048 -keystore europa.jks -validity 3650
 Enter keystore password:
