@@ -1,7 +1,10 @@
 package com.europa.cass.flux.heroes;
 
+import com.europa.cass.flux.heroes.data.loader.SuperPowersWithSetDataLoader;
 import com.europa.cass.flux.heroes.domain.AlterEgoService;
+import com.europa.cass.flux.heroes.domain.FluxSuperPowersService;
 import com.europa.cass.flux.heroes.domain.SuperHeroService;
+import com.europa.cass.flux.heroes.dto.SuperPowersWithSet;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
@@ -57,11 +61,27 @@ public class CassFluxSuperHeroesApiApplication {
     return new AlterEgoService(alterEgoUrl, apiDelay, WebClient.create(alterEgoUrl));
   }
 
+
+  @Value("${api.all.super.powers.base.uri}")
+  private String superPowersUrl;
+
+
+  @Bean
+  public FluxSuperPowersService fluxSuperPowersService() {
+    return new FluxSuperPowersService(superPowersUrl, apiDelay, WebClient.create(superPowersUrl));
+  }
+
 }
 
 @RestController
 @RequestMapping
 class PingPongController {
+
+  private final SuperPowersWithSetDataLoader superPowersWithSetDataLoader;
+
+  PingPongController(SuperPowersWithSetDataLoader superPowersWithSetDataLoader) {
+    this.superPowersWithSetDataLoader = superPowersWithSetDataLoader;
+  }
 
   @GetMapping("/ping")
   public Mono<Map<String, String>> ping() {
@@ -129,6 +149,11 @@ class PingPongController {
         .get()
         .retrieve()
         .bodyToMono(RandomNumber.class);
+  }
+
+  @GetMapping("/super-powers-w-set-type")
+  public Flux<SuperPowersWithSet> superPowersWSet() {
+    return superPowersWithSetDataLoader.load("1234XYZ");
   }
 
 }

@@ -1,6 +1,8 @@
 package com.europa.cass.flux.heroes.domain;
 
+import com.datastax.oss.driver.api.core.uuid.Uuids;
 import java.time.Duration;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -26,6 +28,8 @@ public class AlterEgoService {
   }
 
   public Mono<AlterEgoDomain> alterEgo(String id) {
+    UUID uuid = Uuids.timeBased();
+
     return this.client
         .get()
         .uri("", id, this.delay)
