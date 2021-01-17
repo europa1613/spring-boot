@@ -31,12 +31,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.blockhound.BlockHound;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 //@EnableAsync
 public class CassFluxSuperHeroesApiApplication {
+
+  static {
+    BlockHound
+        .builder()
+        .addDynamicThreadPredicate(Thread::isDaemon)
+        .install();
+
+    /*
+      @link https://projectreactor.io/docs/core/release/reference/#reactor-tools-debug
+     *
+     * ReactorDebugAgent.init();
+     */
+
+  }
 
   public static void main(String[] args) {
     SpringApplication.run(CassFluxSuperHeroesApiApplication.class, args);
@@ -84,7 +99,8 @@ class PingPongController {
   }
 
   @GetMapping("/ping")
-  public Mono<Map<String, String>> ping() {
+  public Mono<Map<String, String>> ping() throws InterruptedException {
+    Thread.sleep(1000);
     return Mono.just(new HashMap<String, String>() {{
                        put("ping", "pong");
                      }}
