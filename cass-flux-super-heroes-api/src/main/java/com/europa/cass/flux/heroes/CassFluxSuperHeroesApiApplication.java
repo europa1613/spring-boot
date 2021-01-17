@@ -12,6 +12,7 @@ import javax.net.ssl.SSLContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClients;
@@ -26,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,9 +43,19 @@ public class CassFluxSuperHeroesApiApplication {
 
   static {
     BlockHound
-        .builder()
-        .addDynamicThreadPredicate(Thread::isDaemon)
-        .install();
+        //.builder()
+        // adding this startup works but blockhoudn doesn't dectect blocking call
+        //.allowBlockingCallsInside("com.datastax.oss.driver.api.core.uuid.Uuids", "random")
+        //.with(new SpringCoreBlockHoundIntegration())
+        //.nonBlockingThreadPredicate(current -> current.or(it -> it.getName().contains("s0-admin-")))
+        //.nonBlockingThreadPredicate(current -> current.or(it -> it.getName().contains("s0-io-")))
+        //.addDynamicThreadPredicate(thread -> thread.getName().contains("s0-admin-"))
+        //.addDynamicThreadPredicate(thread -> thread.getName().contains("s0-io-"))
+        .install(builder -> { // Finally working :) Only logs the exception
+          builder.blockingMethodCallback(it -> {
+            new Exception(it.toString()).printStackTrace();
+          });
+        });
 
     /*
       @link https://projectreactor.io/docs/core/release/reference/#reactor-tools-debug
@@ -90,13 +102,11 @@ public class CassFluxSuperHeroesApiApplication {
 
 @RestController
 @RequestMapping
+@RequiredArgsConstructor
 class PingPongController {
 
   private final SuperPowersWithSetDataLoader superPowersWithSetDataLoader;
-
-  PingPongController(SuperPowersWithSetDataLoader superPowersWithSetDataLoader) {
-    this.superPowersWithSetDataLoader = superPowersWithSetDataLoader;
-  }
+  private final BlockingGreetingService greetingService;
 
   @GetMapping("/ping")
   public Mono<Map<String, String>> ping() throws InterruptedException {
@@ -105,6 +115,11 @@ class PingPongController {
                        put("ping", "pong");
                      }}
     );
+  }
+
+  @GetMapping("/blocking-greeting")
+  public Mono<String> greeting() {
+    return Mono.just(greetingService.getGreeting());
   }
 
   // FAILS
@@ -181,5 +196,22 @@ class RandomNumber {
 
   private Integer randomNumber;
 
+}
+
+@Service
+@NoArgsConstructor
+class BlockingGreetingService {
+
+  public String getGreeting() {
+    try {
+      // Simulate blocking I/O call with a blocking sleep call
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new RuntimeException(e);
+    }
+
+    return "Hello, Mr. Stark!";
+  }
 }
 
