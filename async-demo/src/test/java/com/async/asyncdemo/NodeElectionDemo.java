@@ -19,7 +19,9 @@ public class NodeElectionDemo {
             map.put(nodeCount, elects);
         }
 
-        System.out.println("Hour  :::: " + IntStream.range(0, 24).boxed().collect(Collectors.toList()));
+        System.out.println("Hour  :::: " + IntStream.range(0, 24)
+                                                    .boxed()
+                                                    .collect(Collectors.toList()));
 
         map.forEach((k, v) -> {
             System.out.println("Nodes " + k + "::: " + v);

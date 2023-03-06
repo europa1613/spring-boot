@@ -33,7 +33,6 @@ public class HttpsApplicationIntegrationTest {
   private String trustStorePassword;
 
   @Test
-  @SuppressWarnings("unchecked")
   public void whenGETanHTTPSResource_thenCorrectResponse() throws Exception {
     RestTemplate template = restTemplate();
 

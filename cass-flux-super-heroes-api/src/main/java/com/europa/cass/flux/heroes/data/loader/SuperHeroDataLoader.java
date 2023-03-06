@@ -40,7 +40,7 @@ public class SuperHeroDataLoader {
     SuperHero batman = new SuperHero(key, LocalDateTime.now());
     return reactiveCassandraOperations
         .insert(batman, InsertOptions.builder().ttl(60).build())
-        .map(result -> result.getEntity());
+        .map(EntityWriteResult::getEntity);
   }
 
 }
