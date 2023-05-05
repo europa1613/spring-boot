@@ -5,6 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Advisorr {
     private String id;
     private String firstname;

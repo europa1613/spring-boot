@@ -42,13 +42,14 @@ class AdvisorController {
     public Flux<Advisorr> advisors() {
         return Flux.just(1, 2, 3)
                    .publishOn(esScheduler)
-                   .flatMap(id -> Flux.just(new Advisorr(String.valueOf(id))))
+                   .flatMap(repository::construct)
                    .publishOn(esScheduler)
                    .flatMap(repository::getFirstName)
                    .publishOn(esScheduler)
                    .flatMap(repository::getLastName)
                    .publishOn(esScheduler)
                    .flatMap(repository::getDateOfBirth)
+                   .publishOn(esScheduler)
                    .flatMap(repository::log);
         //.subscribeOn(Schedulers.parallel());
     }
@@ -75,9 +76,17 @@ class AdvisorrRepository {
         put("3", "1980-12-14");
     }};
 
+    public Flux<Advisorr> construct(final Integer id) {
+        Advisorr advisorr = new Advisorr();
+        log.info("Thread: {}; construct(): advisorr {}", Thread.currentThread()
+                                                                  .getName(), advisorr);
+        advisorr.setId(String.valueOf(id));
+        return Flux.just(advisorr);
+    }
+
     public Flux<Advisorr> getFirstName(final Advisorr advisorr) {
         final String id = advisorr.getId();
-        log.info("Thread: {}; advisorr {}", Thread.currentThread()
+        log.info("Thread: {}; getFirstName(): advisorr {}", Thread.currentThread()
                                                   .getName(), advisorr);
         String first = FIRST.get(id);
         advisorr.setFirstname(first);
@@ -87,7 +96,7 @@ class AdvisorrRepository {
 
     public Flux<Advisorr> getLastName(final Advisorr advisorr) {
         final String id = advisorr.getId();
-        log.info("Thread: {}; advisorr {}", Thread.currentThread()
+        log.info("Thread: {}; getLastName(): advisorr {}", Thread.currentThread()
                                                   .getName(), advisorr);
         String last = LAST.get(id);
         advisorr.setLastname(last);
@@ -97,7 +106,7 @@ class AdvisorrRepository {
 
     public Flux<Advisorr> getDateOfBirth(final Advisorr advisorr) {
         final String id = advisorr.getId();
-        log.info("Thread: {}; advisorr {}", Thread.currentThread()
+        log.info("Thread: {}; getDateOfBirth(): advisorr {}", Thread.currentThread()
                                                   .getName(), advisorr);
         String dob = DOB.get(id);
         advisorr.setDateOfBirth(dob);
@@ -106,7 +115,7 @@ class AdvisorrRepository {
     }
 
     public Flux<Advisorr> log(final Advisorr advisorr) {
-        log.info("Thread: {}; advisorr {}", Thread.currentThread()
+        log.info("Thread: {}; log(): advisorr {}", Thread.currentThread()
                                                   .getName(), advisorr);
         return Flux.just(advisorr);
     }
